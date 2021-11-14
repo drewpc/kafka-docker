@@ -13,6 +13,8 @@ env:
 # Build recommended versions based on: http://kafka.apache.org/downloads
 matrix:
   include:
+  - scala: 2.11
+    env: KAFKA_VERSION=1.1.1
   - scala: 2.12
     env: KAFKA_VERSION=2.0.1
   - scala: 2.12
@@ -46,8 +48,9 @@ install:
   - echo "LATEST VERSION $LATEST"
   - if [ -z ${DOCKER_PASSWORD+x} ]; then echo "Using unauthenticated pulls on PR"; else echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
   - export CURRENT=${TRAVIS_SCALA_VERSION}-${KAFKA_VERSION}
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - docker buildx create --use
-  - bash docker_buildx
+  - bash docker_buildx --load
   - docker pull confluentinc/cp-kafkacat
 
 before_script:

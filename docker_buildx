@@ -4,6 +4,7 @@ EXTRA_BUILDX_ARGS=$@
 
 docker buildx build \
     --platform linux/amd64,linux/arm64 \
+    --progress=plain \
     --build-arg kafka_version=$KAFKA_VERSION \
     --build-arg scala_version=$TRAVIS_SCALA_VERSION \
     --build-arg vcs_ref=$TRAVIS_COMMIT \
