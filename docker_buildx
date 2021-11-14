@@ -2,7 +2,7 @@
 
 EXTRA_BUILDX_ARGS=$@
 
-if grep -q "--load" <<< "${EXTRA_BUILDX_ARGS}"; then
+if [[ "${EXTRA_BUILDX_ARGS}" == *"--load"* ]]; then
     PLATFORMS="linux/amd64"
 else
     PLATFORMS="linux/amd64,linux/arm64"
