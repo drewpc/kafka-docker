@@ -15,22 +15,22 @@ matrix:
   include:
   - scala: 2.11
     env: KAFKA_VERSION=1.1.1
-  - scala: 2.12
-    env: KAFKA_VERSION=2.0.1
-  - scala: 2.12
-    env: KAFKA_VERSION=2.1.1
-  - scala: 2.12
-    env: KAFKA_VERSION=2.2.2
-  - scala: 2.12
-    env: KAFKA_VERSION=2.3.1
-  - scala: 2.12
-    env: KAFKA_VERSION=2.4.1
-  - scala: 2.12
-    env: KAFKA_VERSION=2.5.0
-  - scala: 2.13
-    env: KAFKA_VERSION=2.6.0
-  - scala: 2.13
-    env: KAFKA_VERSION=2.7.1
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.0.1
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.1.1
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.2.2
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.3.1
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.4.1
+#  - scala: 2.12
+#    env: KAFKA_VERSION=2.5.0
+#  - scala: 2.13
+#    env: KAFKA_VERSION=2.6.0
+#  - scala: 2.13
+#    env: KAFKA_VERSION=2.7.1
 
 # Upgrade Docker Engine so we can use buildx
 before_install:
@@ -50,6 +50,7 @@ install:
   - export CURRENT=${TRAVIS_SCALA_VERSION}-${KAFKA_VERSION}
   - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - docker buildx create --use
+  - bash docker_buildx
   - bash docker_buildx --load
   - docker pull confluentinc/cp-kafkacat
 

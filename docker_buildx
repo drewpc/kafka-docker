@@ -1,9 +1,15 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 EXTRA_BUILDX_ARGS=$@
 
+if grep -q "--load" <<< "${EXTRA_BUILDX_ARGS}"; then
+    PLATFORMS="linux/amd64"
+else
+    PLATFORMS="linux/amd64,linux/arm64"
+fi
+
 docker buildx build \
-    --platform linux/amd64,linux/arm64 \
+    --platform "${PLATFORMS}" \
     --progress=plain \
     --build-arg kafka_version=$KAFKA_VERSION \
     --build-arg scala_version=$TRAVIS_SCALA_VERSION \
