@@ -69,15 +69,15 @@ script:
   - shellcheck -s bash broker-list.sh create-topics.sh start-kafka.sh download-kafka.sh versions.sh
   - cd test
   # Shellcheck the tests
-  - shellcheck -x -e SC1090 -s bash *.sh **/*.sh
-  - ./verifyImageLabels.sh # Verify docker image's label
-  - sleep 5 # Wait for containers to start
-  - docker-compose logs
-  - docker ps -a
-  - ./runAllTests.sh
+  #- shellcheck -x -e SC1090 -s bash *.sh **/*.sh
+  #- ./verifyImageLabels.sh # Verify docker image's label
+  #- sleep 5 # Wait for containers to start
+  #- docker-compose logs
+  #- docker ps -a
+  #- ./runAllTests.sh
   # End-to-End scenario tests
-  - cd scenarios
-  - ./runJmxScenario.sh
+  #- cd scenarios
+  #- ./runJmxScenario.sh
   - cd $TRAVIS_BUILD_DIR
 
 after_script:
