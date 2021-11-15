@@ -54,11 +54,11 @@ install:
   - docker buildx create --use
 
   # Build all of the platforms
-  - bash docker_buildx
+  - bash -x docker_buildx
   
   # This second call to the same script, with --load flag, is supposed to use the build from the previous
   # call and load it into docker for the subsequent docker-compose/test stuff.
-  - bash docker_buildx --load
+  - bash -x docker_buildx --load
   - docker pull confluentinc/cp-kafkacat
 
 before_script:
