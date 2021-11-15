@@ -2,6 +2,13 @@
 
 EXTRA_BUILDX_ARGS=$@
 
+CACHE_LOCATION="type=local,dest=/tmp/docker-cache"
+if [[ "${EXTRA_BUILDX_ARGS}" == "" ]]; then
+    CACHE="--cache-to=${CACHE_LOCATION}"
+else
+    CACHE="--cache-from=${CACHE_LOCATION}"
+fi
+
 if [[ "${EXTRA_BUILDX_ARGS}" == *"--load"* ]]; then
     PLATFORMS="linux/amd64"
 else
@@ -9,6 +16,7 @@ else
 fi
 
 docker buildx build \
+    $CACHE \
     --platform "${PLATFORMS}" \
     --progress=plain \
     --build-arg kafka_version=$KAFKA_VERSION \
