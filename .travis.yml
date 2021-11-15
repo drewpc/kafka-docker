@@ -13,24 +13,34 @@ env:
 # Build recommended versions based on: http://kafka.apache.org/downloads
 matrix:
   include:
+  - scala: 2.10
+    env: KAFKA_VERSION=0.8.2.2
+  - scala: 2.11
+    env: KAFKA_VERSION=0.9.0.1
+  - scala: 2.11
+    env: KAFKA_VERSION=0.10.2.2
+  - scala: 2.11
+    env: KAFKA_VERSION=0.11.0.3
+  - scala: 2.11
+    env: KAFKA_VERSION=1.0.2
   - scala: 2.11
     env: KAFKA_VERSION=1.1.1
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.0.1
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.1.1
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.2.2
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.3.1
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.4.1
-#  - scala: 2.12
-#    env: KAFKA_VERSION=2.5.0
-#  - scala: 2.13
-#    env: KAFKA_VERSION=2.6.0
-#  - scala: 2.13
-#    env: KAFKA_VERSION=2.7.1
+  - scala: 2.12
+    env: KAFKA_VERSION=2.0.1
+  - scala: 2.12
+    env: KAFKA_VERSION=2.1.1
+  - scala: 2.12
+    env: KAFKA_VERSION=2.2.2
+  - scala: 2.12
+    env: KAFKA_VERSION=2.3.1
+  - scala: 2.12
+    env: KAFKA_VERSION=2.4.1
+  - scala: 2.12
+    env: KAFKA_VERSION=2.5.0
+  - scala: 2.13
+    env: KAFKA_VERSION=2.6.0
+  - scala: 2.13
+    env: KAFKA_VERSION=2.7.1
 
 # Upgrade Docker Engine so we can use buildx
 before_install:
@@ -49,7 +59,7 @@ install:
   - if [ -z ${DOCKER_PASSWORD+x} ]; then echo "Using unauthenticated pulls on PR"; else echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
   - export CURRENT=${TRAVIS_SCALA_VERSION}-${KAFKA_VERSION}
 
-  # Add qemu so our multi-arch builds are properly emulated
+  # Prepare the environment for multi-arch builds
   - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - docker buildx create --use
 
@@ -69,15 +79,15 @@ script:
   - shellcheck -s bash broker-list.sh create-topics.sh start-kafka.sh download-kafka.sh versions.sh
   - cd test
   # Shellcheck the tests
-  #- shellcheck -x -e SC1090 -s bash *.sh **/*.sh
-  #- ./verifyImageLabels.sh # Verify docker image's label
-  #- sleep 5 # Wait for containers to start
-  #- docker-compose logs
-  #- docker ps -a
-  #- ./runAllTests.sh
+  - shellcheck -x -e SC1090 -s bash *.sh **/*.sh
+  - ./verifyImageLabels.sh # Verify docker image's label
+  - sleep 5 # Wait for containers to start
+  - docker-compose logs
+  - docker ps -a
+  - ./runAllTests.sh
   # End-to-End scenario tests
-  #- cd scenarios
-  #- ./runJmxScenario.sh
+  - cd scenarios
+  - ./runJmxScenario.sh
   - cd $TRAVIS_BUILD_DIR
 
 after_script:

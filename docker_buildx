@@ -1,15 +1,15 @@
 #!/bin/bash -e
 
-EXTRA_BUILDX_ARGS=$@
-CACHE_LOCATION="/tmp/docker-cache"
+# Build for amd64 and arm64
 PLATFORMS="linux/amd64,linux/arm64"
 
-echo "TRAVIS_CPU_ARCH: $TRAVIS_CPU_ARCH"
+EXTRA_BUILDX_ARGS=$@
+CACHE_LOCATION="/tmp/docker-cache"
 
 if [[ "${EXTRA_BUILDX_ARGS}" == *"--load"* ]]; then
-    # We have to use the current architecture only when loading the image to run tests, so let's
+    # We have to load the image for the current architecture only in order to run tests, so let's
     # pull FROM the multi-arch build that happened previously
-    PLATFORMS="linux/amd64"
+    PLATFORMS="linux/${TRAVIS_CPU_ARCH}"
     CACHE="--cache-from=type=local,src=${CACHE_LOCATION}"
 elif [[ "${EXTRA_BUILDX_ARGS}" == *"--push"* ]]; then
     # Push ALL architectures FROM the multi-arch build cache that happened previously
